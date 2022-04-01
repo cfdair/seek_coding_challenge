@@ -53,7 +53,7 @@ def question_2(df: DataFrame) -> None:
 def question_3(df: DataFrame) -> None:
     """Print question 3 and provide the answer."""
     print("Q3. How many records are there in the dataset?")
-    fail
+    print(f"The number of rows in the data is: {df.count()}...")
     print("Question 3 complete.")
 
 
