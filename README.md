@@ -33,3 +33,14 @@ from the root directory, or execute:
 ```bash
 make .envrc
 ```
+
+### Downloading the data
+
+To download the data, execute the following script:
+```bash
+export $(cat .env | xargs) && bash bin/download_dataset.bash
+```
+from the root directory, or execute:
+```bash
+make download
+```
