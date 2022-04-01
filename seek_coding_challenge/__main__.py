@@ -62,7 +62,7 @@ def question_4(df: DataFrame) -> None:
     print("Q4. What is the average salary for each "
                 "profile? Display the first 10 results, "
                 "ordered by lastName in descending order.")
-    fail
+    df.sort(f.desc(f.col("profile.lastName"))).show(10)
     print("Question 4 complete.")
 
 
