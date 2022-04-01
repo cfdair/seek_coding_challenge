@@ -44,3 +44,15 @@ from the root directory, or execute:
 ```bash
 make download
 ```
+
+### Executing the answers to the questions
+
+To have the scripts print out the questions 
+and the associated answers, execute the following command:
+```bash
+docker build . --tag seek_coding_challenge && docker run -it -v $$(pwd):/opt/app/ seek_coding_challenge
+```
+from the root directory, or execute:
+```bash
+make run
+```
