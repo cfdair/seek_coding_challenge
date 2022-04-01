@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "seek_coding_challenge"
+version = "0.1.0"
+description = "This project is for completing the SEEK coding challenge."
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pyspark = "^3.2.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

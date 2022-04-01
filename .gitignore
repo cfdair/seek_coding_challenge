@@ -6,3 +6,6 @@
 
 # Project artefacts
 data
+
+# Python artefacts
+**/*.pyc
