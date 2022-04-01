@@ -45,7 +45,8 @@ def question_1(spark: SparkSession) -> DataFrame:
 def question_2(df: DataFrame) -> None:
     """Print question 2 and provide the answer."""
     print("Q2. Print the schema.")
-    fail
+    print(f"The schema for the data is: ...")
+    df.printSchema()
     print("Question 2 complete.")
 
 
