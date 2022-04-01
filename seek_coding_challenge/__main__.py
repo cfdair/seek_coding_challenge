@@ -36,7 +36,8 @@ def question_1(spark: SparkSession) -> DataFrame:
     print("Q1. Please load the dataset into a Spark dataframe. "
     "You may want to look at the data first using jq or a similar tool "
     "to get an idea of how the data is structured.")
-    fail
+    df = spark.read.json("data/test_data/*.json")
+    print("Data successfully loaded from data/test_data/*.json...")
     print("Question 1 complete.")
     return df
 
