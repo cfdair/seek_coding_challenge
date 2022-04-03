@@ -308,6 +308,7 @@ def question_12(question_11_df: DataFrame) -> None:
         question_11_df
         .write
         .partitionBy("highest_paying_job_year")
+        .mode("overwrite")
         .parquet(
             path="tmp/highest_paid_salaries",
             compression="gzip"
