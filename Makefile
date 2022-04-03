@@ -14,8 +14,14 @@ download: .envrc
 build_docker:
 	@docker build . --tag seek_coding_challenge
 
+build_docker_dev:
+	@docker build . --build-arg POETRY_DEV_OPTION= --tag seek_coding_challenge_dev
+
 run: build_docker
 	@docker run -it -v $$(pwd):/opt/app/ seek_coding_challenge
+
+test: build_docker_dev
+	@docker run -it seek_coding_challenge_dev pytest
 
 clean:
 	@rm -rf data/
