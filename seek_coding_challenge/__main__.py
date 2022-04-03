@@ -10,6 +10,7 @@ from pyspark import SparkConf
 from pyspark.sql import functions as f
 from pyspark.sql import types as t
 
+from seek_coding_challenge.objects.job import JOB_PYSPARK_STRUCT
 from seek_coding_challenge.objects.profile import Profile
 
 
@@ -226,13 +227,31 @@ def question_9(df: DataFrame) -> None:
 
 
 def question_10(df: DataFrame) -> None:
-    """Print question 10 and provide the answer."""
-    print("Q10. For each person, list only their latest job. "
-                "Display the first 10 results, ordered by "
-                "lastName descending, firstName ascending order.")
-    fail
-    print("Question 10 complete.")
+    """Print question 10 and provide the answer.
 
+    Args:
+        df (DataFrame): The raw loaded json data as a dataframe.
+    """
+    print(
+        "Q10. For each person, list only their latest job. "
+        "Display the first 10 results, ordered by "
+        "lastName descending, firstName ascending order."
+    )
+    udf_get_current_job = f.udf(lambda x: Profile(x).get_current_job(), JOB_PYSPARK_STRUCT)
+    current_jobs_df = df.select(
+        "profile.firstName",
+        "profile.lastName",
+        udf_get_current_job(f.col("profile")).alias("current_job"),
+    )
+    current_jobs_df.select(
+        "firstName",
+        "lastName",
+        "current_job.*",
+    ).sort(
+        f.desc("lastName"),
+        f.asc("firstName")
+    ).show(10)
+    print()
 
 def question_11(df: DataFrame) -> None:
     """Print question 11 and provide the answer."""
