@@ -189,11 +189,21 @@ def question_7(df: DataFrame) -> None:
     print()
 
 
-def question_8(df: DataFrame) -> None:
-    """Print question 8 and provide the answer."""
+def question_8(jobs_df: DataFrame) -> None:
+    """Print question 8 and provide the answer.
+
+    Args:
+        jobs_df (DataFrame): The dataframe where each row is a job.
+    """
     print("Q8. What was the most popular job title started in 2019?")
-    fail
-    print("Question 8 complete.")
+    jobs_started_in_2019_df = jobs_df.filter(f.year(f.col("job.fromDate")) == 2019)
+    job_count_in_2019_df = jobs_started_in_2019_df.groupby(
+        "job.title"
+    ).count()
+    job_count_in_2019_df.sort(
+        f.desc("count")
+    ).show(1)
+    print()
 
 
 def question_9(df: DataFrame) -> None:
