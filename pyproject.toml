@@ -5,7 +5,7 @@ description = "This project is for completing the SEEK coding challenge."
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10.4"
 pyspark = "^3.0.0"
 
 [tool.poetry.dev-dependencies]
