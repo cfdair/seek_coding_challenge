@@ -15,7 +15,7 @@ build_docker:
 	@docker build . --build-arg UID=$$(id -u) --tag seek_coding_challenge
 
 build_docker_dev:
-	@docker build . --build-arg UID=$$(id -u)--build-arg POETRY_DEV_OPTION= --tag seek_coding_challenge_dev
+	@docker build . --build-arg UID=$$(id -u) --build-arg POETRY_DEV_OPTION= --tag seek_coding_challenge_dev
 
 run: build_docker
 	@docker run -it -v $$(pwd):/opt/app/ seek_coding_challenge

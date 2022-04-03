@@ -60,7 +60,7 @@ make download
 To have the scripts print out the questions
 and the associated answers, from the root directory execute the following command:
 ```bash
-docker build . --build-arg UID=$$(id -u) --tag seek_coding_challenge && docker run -it -v $$(pwd):/opt/app/ -e UID=$$(UID) seek_coding_challenge
+docker build . --build-arg UID=$(id -u) --tag seek_coding_challenge && docker run -it -v $(pwd):/opt/app/ seek_coding_challenge
 ```
 or execute:
 ```bash
@@ -71,7 +71,7 @@ make run
 
 To run the tests, from the root directory execute the following command:
 ```bash
-docker build . --build-arg UID=$$(id -u)--build-arg POETRY_DEV_OPTION= --tag seek_coding_challenge_dev && docker run -it seek_coding_challenge_dev pytest
+docker build . --build-arg UID=$(id -u) --build-arg POETRY_DEV_OPTION= --tag seek_coding_challenge_dev && docker run -it seek_coding_challenge_dev pytest
 ```
 or execute:
 ```bash
