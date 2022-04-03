@@ -1,0 +1,159 @@
+Beginning process...
+Initialising spark...
+
+---------------
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.apache.spark.unsafe.Platform (file:/home/leaf/.venv/lib/python3.10/site-packages/pyspark/jars/spark-unsafe_2.12-3.0.3.jar) to constructor java.nio.DirectByteBuffer(long,int)
+WARNING: Please consider reporting this to the maintainers of org.apache.spark.unsafe.Platform
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+22/04/03 10:43:47 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+---------------
+
+Q1. Please load the dataset into a Spark dataframe. You may want to look at the data first using jq or a similar tool to get an idea of how the data is structured.
+Data successfully loaded from data/test_data/*.json...
+
+Q2. Print the schema.
+root
+ |-- id: string (nullable = true)
+ |-- profile: struct (nullable = true)
+ |    |-- firstName: string (nullable = true)
+ |    |-- jobHistory: array (nullable = true)
+ |    |    |-- element: struct (containsNull = true)
+ |    |    |    |-- fromDate: string (nullable = true)
+ |    |    |    |-- location: string (nullable = true)
+ |    |    |    |-- salary: long (nullable = true)
+ |    |    |    |-- title: string (nullable = true)
+ |    |    |    |-- toDate: string (nullable = true)
+ |    |-- lastName: string (nullable = true)
+
+
+Q3. How many records are there in the dataset?
+17139693 records.
+
+Q4. What is the average salary for each profile? Display the first 10 results, ordered by lastName in descending order.
++--------------------+---------+--------------------+--------+--------------+
+|                  id|firstName|          jobHistory|lastName|average_salary|
++--------------------+---------+--------------------+--------+--------------+
+|5894afab-574f-429...|  Richard|[[2018-07-23, Syd...|  Zywiec|       69625.0|
+|82dab74c-3946-45b...|   Robert|[[2016-08-08, Ade...|  Zywiec|      66833.33|
+|ba24222d-6e39-40d...|  Matthew|[[2017-04-23, Per...|  Zywiec|       65500.0|
+|4e26c80a-8e84-46f...|    Bobby|[[2017-12-11, Per...| Zywicki|      78166.67|
+|a9bf641e-0dfe-46a...| Jennifer|[[2019-02-16, Hob...| Zywicki|      144500.0|
+|40fa57e1-5f0e-45e...|    James|[[2018-10-28, Can...| Zywicki|       86000.0|
+|8c44a4ac-7af3-44a...|     Juan|                  []| Zywicki|          null|
+|d0a2a8bc-5d7b-45d...|  Melanie|                  []| Zywicki|          null|
+|fd6e55be-4864-470...|   Alyson|                  []| Zywicki|          null|
+|56cc651c-0bbd-492...|    Katie|[[2013-02-26, Can...| Zywicki|       55250.0|
++--------------------+---------+--------------------+--------+--------------+
+only showing top 10 rows
+
+
+Q5. What is the average salary across the whole dataset?
+$97473.62
+
+Q6. On average, what are the top 5 paying jobs? Bottom 5 paying jobs? If there is a tie, please order by title, location.
++--------------------+---------+------------------+
+|               title| location|average_job_salary|
++--------------------+---------+------------------+
+|   cosmetic injector|Melbourne|          97685.17|
+|safety superinten...|    Perth|          97670.41|
+|  Multi Site Manager|Melbourne|          97646.69|
+|             trimmer| Brisbane|          97643.56|
+|       store manager|   Hobart|          97641.65|
++--------------------+---------+------------------+
+only showing top 5 rows
++--------------------+--------+------------------+
+|               title|location|average_job_salary|
++--------------------+--------+------------------+
+|Administration Of...|Brisbane|          97282.44|
+|business developm...|  Hobart|           97314.6|
+|business developm...|Canberra|          97318.79|
+|medical radiation...|  Sydney|          97324.04|
+|medical radiation...|Brisbane|           97331.9|
++--------------------+--------+------------------+
+only showing top 5 rows
+
+
+Q7. Who is currently making the most money? If there is a tie, please order in lastName descending, fromDate descending.
++---------+--------+--------------+-----------------+
+|firstName|lastName|current_salary|current_from_date|
++---------+--------+--------------+-----------------+
+|    Kevin|    Zyla|        159000|       2014-07-23|
+|  Vanessa|Zwilling|        159000|       2018-02-23|
+|     John|   Zwart|        159000|       2015-07-23|
+|    Donna|   Zuzek|        159000|       2018-04-23|
+|   Dallas|    Zuza|        159000|       2017-10-23|
+|     John|  Zutell|        159000|       2013-07-23|
+|   Thomas|  Zurita|        159000|       2015-02-23|
+|  Edwardo|   Zupke|        159000|       2016-01-23|
+|  William|   Zupan|        159000|       2018-09-23|
+|Sylvester|    Zunk|        159000|       2017-06-23|
+|    Lewis|  Zuniga|        159000|       2018-11-23|
+|     Lois|  Zuniga|        159000|       2018-05-23|
+|  Ulysses|  Zuniga|        159000|       2018-01-23|
+|     Faye|  Zuniga|        159000|       2017-09-23|
+|  William|  Zuniga|        159000|       2017-06-23|
+|  Gregory|  Zuniga|        159000|       2016-08-23|
+|  Frances|  Zuniga|        159000|       2016-02-23|
+|   Cheryl|  Zuniga|        159000|       2016-01-23|
+|   Thomas|  Zuniga|        159000|       2015-03-23|
+|  Michael|  Zuniga|        159000|       2015-01-23|
++---------+--------+--------------+-----------------+
+only showing top 20 rows
+
+
+Q8. What was the most popular job title started in 2019?
++-----------------+-----+
+|            title|count|
++-----------------+-----+
+|Sheetmetal Worker|14764|
++-----------------+-----+
+only showing top 1 row
+
+
+Q9. How many people are currently working?
+7710613 currently working.
+
+Q10. For each person, list only their latest job. Display the first 10 results, ordered by lastName descending, firstName ascending order.
++---------+--------+--------+------+------------------+----------+-------+
+|firstName|lastName|location|salary|             title| from_date|to_date|
++---------+--------+--------+------+------------------+----------+-------+
+|  Matthew|  Zywiec|   Perth| 67000|Multi Site Manager|2017-04-23|   null|
+|  Richard|  Zywiec|  Sydney| 83000|         assembler|2018-07-23|   null|
+|   Robert|  Zywiec|    null|  null|              null|      null|   null|
+|   Albert| Zywicki|    null|  null|              null|      null|   null|
+|   Alyson| Zywicki|    null|  null|              null|      null|   null|
+|  Anthony| Zywicki|    null|  null|              null|      null|   null|
+|    Bobby| Zywicki|    null|  null|              null|      null|   null|
+|   Calvin| Zywicki|    null|  null|              null|      null|   null|
+|  Charles| Zywicki|    null|  null|              null|      null|   null|
+|  Cherryl| Zywicki|    null|  null|              null|      null|   null|
++---------+--------+--------+------+------------------+----------+-------+
+only showing top 10 rows
+
+
+Q11. For each person, list their highest paying job along with their first name, last name, salary and the year they made this salary. Store the results in a dataframe, and then print out 10 results.
++---------+---------+-------------------------+----------+-----------------------+
+|firstName| lastName|highest_paying_job_salary| from_date|highest_paying_job_year|
++---------+---------+-------------------------+----------+-----------------------+
+|Elizabeth|  Robledo|                   116000|2013-03-13|                   2013|
+|    Karen|    Bozek|                   148000|2013-10-12|                   2013|
+|     Lisa|    Grell|                   131000|2015-07-14|                   2015|
+| Virginia|Rodriguez|                    95000|2018-05-17|                   2018|
+|  Barbara|   Jochem|                    66000|2015-07-14|                   2015|
+|   Justin|  Osborne|                   109000|2014-10-23|                   2014|
+|  William|   Avalos|                   124000|2017-01-23|                   2017|
+|   George|   Barone|                    75000|2016-10-09|                   2016|
+|   Martha|     Noel|                    73000|2017-03-23|                   2017|
+|    Ferne|      Ott|                    69000|2014-04-13|                   2014|
++---------+---------+-------------------------+----------+-----------------------+
+only showing top 10 rows
+
+
+Q12. Write out the last result (question 11) in parquet format, compressed, partitioned by year of their highest paying job.
+
+Complete.
