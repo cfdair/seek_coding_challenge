@@ -2,7 +2,7 @@
 
 ## Description
 
-This coding challenge contains a PDF(not linked) referring to some 
+This coding challenge contains a PDF(not linked) referring to some
 dataset, and posing some questions regarding that data.
 
 This project is setup to answer those questions.
@@ -28,7 +28,7 @@ This project assumes the following about the environment:
 
 ### Setting up the credentials
 
-The dataset download requires some credentials set 
+The dataset download requires some credentials set
 to unzip it.
 
 To setup the .envrc file, execute the script:
@@ -42,19 +42,19 @@ make .envrc
 
 ### Downloading the data
 
-To download the data, execute the following script:
+To download the data, from the root directory execute the following script:
 ```bash
-export $(cat .env | xargs) && bash bin/download_dataset.bash
+export $(cat .envrc | xargs) > /dev/null && bash bin/download_dataset.bash
 ```
-from the root directory, or execute:
+or execute:
 ```bash
 make download
 ```
 
 ### Executing the answers to the questions
 
-To have the scripts print out the questions 
-and the associated answers, execute the following command:
+To have the scripts print out the questions
+and the associated answers, from the root directory execute the following command:
 ```bash
 docker build . --build-arg UID=$$(id -u) --tag seek_coding_challenge && docker run -it -v $$(pwd):/opt/app/ -e UID=$$(UID) seek_coding_challenge
 ```
