@@ -13,7 +13,7 @@ from pyspark.sql import functions as f
 def main(args: List[str]) -> None:
     """Execute the main function.
 
-    This will answer all of the questions posed.
+    This will answer all the questions posed.
     """
     print("Beginning process...")
     spark = get_local_spark_session()
@@ -32,38 +32,49 @@ def main(args: List[str]) -> None:
 
 
 def question_1(spark: SparkSession) -> DataFrame:
-    """Print question 1 and provide the answer."""
-    print("Q1. Please load the dataset into a Spark dataframe. "
-    "You may want to look at the data first using jq or a similar tool "
-    "to get an idea of how the data is structured.")
+    """Print question 1 and provide the answer.
+
+    Args:
+        spark (SparkSession): The current spark session.
+
+    Returns:
+        DataFrame: The raw loaded json data as a dataframe.
+    """
+    print(
+        "Q1. Please load the dataset into a Spark dataframe. "
+        "You may want to look at the data first using jq or a similar tool "
+        "to get an idea of how the data is structured."
+    )
     df = spark.read.json("data/test_data/*.json")
     print("Data successfully loaded from data/test_data/*.json...")
-    print("Question 1 complete.")
+    print()
     return df
 
 
 def question_2(df: DataFrame) -> None:
-    """Print question 2 and provide the answer."""
+    """Print question 2 and provide the answer.
+
+    Args:
+        df (DataFrame): The raw loaded json data as a dataframe.
+    """
     print("Q2. Print the schema.")
-    print(f"The schema for the data is: ...")
     df.printSchema()
-    print("Question 2 complete.")
+    print()
 
 
 def question_3(df: DataFrame) -> None:
-    """Print question 3 and provide the answer."""
+    """Print question 3 and provide the answer.
+
+    Args:
+        df (DataFrame): The raw loaded json data as a dataframe.
+    """
     print("Q3. How many records are there in the dataset?")
-    print(f"The number of rows in the data is: {df.count()}...")
-    print("Question 3 complete.")
+    print(f"{df.count()} records.")
+    print()
 
 
 def question_4(df: DataFrame) -> None:
-    """Print question 4 and provide the answer."""
-    print("Q4. What is the average salary for each "
-                "profile? Display the first 10 results, "
-                "ordered by lastName in descending order.")
-    df.sort(f.desc(f.col("profile.lastName"))).show(10)
-    print("Question 4 complete.")
+    """Print question 4 and provide the answer.
 
 
 def question_5(df: DataFrame) -> None:
