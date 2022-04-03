@@ -253,22 +253,67 @@ def question_10(df: DataFrame) -> None:
     ).show(10)
     print()
 
-def question_11(df: DataFrame) -> None:
-    """Print question 11 and provide the answer."""
-    print("Q11. For each person, list their highest "
-                "paying job along with their first name, "
-                "last name, salary and the year they made "
-                "this salary. Store the results in a dataframe, "
-                "and then print out 10 results.")
-    fail
-    print("Question 11 complete.")
+
+def question_11(df: DataFrame) -> DataFrame:
+    """Print question 11 and provide the answer.
+
+    Args:
+        df (DataFrame): The raw loaded json data as a dataframe.
+
+    Returns:
+        DataFrame: The resultant dataframe."""
+    print(
+        "Q11. For each person, list their highest "
+        "paying job along with their first name, "
+        "last name, salary and the year they made "
+        "this salary. Store the results in a dataframe, "
+        "and then print out 10 results."
+    )
+    udf_highest_paying_job = f.udf(
+        lambda x: Profile(x).get_highest_paying_job(),
+        JOB_PYSPARK_STRUCT
+    )
+    question_11_df = df.withColumn(
+        "highest_paying_job", udf_highest_paying_job(f.col("profile"))
+    ).select(
+        f.col("profile.firstName").alias("firstName"),
+        f.col("profile.lastName").alias("lastName"),
+        f.col("highest_paying_job.salary").alias("highest_paying_job_salary"),
+        "highest_paying_job.from_date",
+        f.year("highest_paying_job.from_date").alias("highest_paying_job_year"),
+    )
+    question_11_df.show(10)
+    print()
+    return question_11_df.select(
+        "firstName",
+        "lastName",
+        "highest_paying_job_salary",
+        "highest_paying_job_year",
+    )
 
 
-def question_12(df: DataFrame) -> None:
-    """Print question 12 and provide the answer."""
-    print("Q12. Write out the last result (question 11) in parquet format, compressed, partitioned by year of their highest paying job.")
-    fail
-    print("Question 12 complete.")
+def question_12(question_11_df: DataFrame) -> None:
+    """Print question 12 and provide the answer.
+
+    Args:
+        question_11_df (DataFrame): The resultant dataframe from
+            question 11.
+    """
+    print(
+        "Q12. Write out the last result (question 11) "
+        "in parquet format, compressed, partitioned by "
+        "year of their highest paying job."
+    )
+    (
+        question_11_df
+        .write
+        .partitionBy("highest_paying_job_year")
+        .parquet(
+            path="tmp/highest_paid_salaries",
+            compression="gzip"
+        )
+    )
+    print()
 
 
 def get_local_spark_session() -> SparkSession:
@@ -278,11 +323,14 @@ def get_local_spark_session() -> SparkSession:
         SparkSession: The loaded spark session.
     """
     print("Initialising spark...")
+    print()
+    print("---------------")
     spark_conf = SparkConf().setMaster("local[2]").setAppName("local-testing")
     spark = SparkSession.builder.config(conf=spark_conf).getOrCreate()
+    print("---------------")
+    print()
     return spark
 
 
 if __name__ == "__main__":
-    ARGS = []
-    main(ARGS)
+    main()

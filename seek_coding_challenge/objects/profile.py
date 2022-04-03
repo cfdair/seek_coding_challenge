@@ -118,3 +118,16 @@ class Profile:
             bool: Whether the profile is currently working.
         """
         return bool(self.get_current_job())
+
+    def get_highest_paying_job(self) -> Optional[Job]:
+        """Get the highest paying job.
+
+        None is returned if there is no job history.
+
+        Returns:
+            Optional[Job]: The highest paying job.
+        """
+        if not self.job_history:
+            return None
+
+        return sorted(self.job_history, key=lambda x: x.salary, reverse=True)[0]

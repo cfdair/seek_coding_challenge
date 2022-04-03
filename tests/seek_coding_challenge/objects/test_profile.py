@@ -286,3 +286,51 @@ def test_profile_is_currently_working_should_return_true():
         }
     )
     assert profile.is_currently_working()
+
+
+def test_profile_get_highest_paying_job_should_handle_no_jobs():
+    """Should run the test successfully."""
+    profile = Profile({"firstName": "jack", "lastName": "smith", "jobHistory": []})
+    assert not profile.get_highest_paying_job()
+
+
+def test_profile_get_highest_paying_job_should_return_true():
+    """Should run the test successfully."""
+    profile = Profile(
+        {
+            "firstName": "jack",
+            "lastName": "smith",
+            "jobHistory": [
+                {
+                    "title": "engineer",
+                    "location": "melbourne",
+                    "salary": 150000,
+                    "fromDate": "2020-01-01",
+                    "toDate": "2020-01-02",
+                },
+                {
+                    "title": "senior engineer",
+                    "location": "melbourne",
+                    "salary": 210000,
+                    "fromDate": "2020-01-02",
+                    "toDate": None,
+                },
+                {
+                    "title": "engineer",
+                    "location": "melbourne",
+                    "salary": 180000,
+                    "fromDate": "2020-01-02",
+                    "toDate": "2020-01-03",
+                },
+            ],
+        }
+    )
+    result = profile.get_highest_paying_job()
+    expected = Job(
+        title="senior engineer",
+        location="melbourne",
+        salary=210000,
+        from_date=date.fromisoformat("2020-01-02"),
+        to_date=None,
+    )
+    assert result == expected
