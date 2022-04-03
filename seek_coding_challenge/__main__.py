@@ -2,15 +2,18 @@
 # encoding: utf-8
 """Print and answer all questions."""
 
-import logging
-from typing import Callable, Any, List
+
+from typing import List
 
 from pyspark.sql import DataFrame, SparkSession
 from pyspark import SparkConf
 from pyspark.sql import functions as f
+from pyspark.sql import types as t
+
+from seek_coding_challenge.objects.profile import Profile
 
 
-def main(args: List[str]) -> None:
+def main() -> None:
     """Execute the main function.
 
     This will answer all the questions posed.
@@ -75,6 +78,25 @@ def question_3(df: DataFrame) -> None:
 
 def question_4(df: DataFrame) -> None:
     """Print question 4 and provide the answer.
+
+    Args:
+        df (DataFrame): The raw loaded json data as a dataframe.
+    """
+    print(
+        "Q4. What is the average salary for each "
+        "profile? Display the first 10 results, "
+        "ordered by lastName in descending order."
+    )
+    udf_average_salary = f.udf(
+        lambda x: Profile(x).get_average_salary(), t.FloatType()
+    )
+    with_average_salary_df = df.select(
+        "id",
+        "profile.*",
+        udf_average_salary(f.col("profile")).alias("average_salary")
+    )
+    with_average_salary_df.sort(f.desc("profile.lastName")).show(10)
+    print()
 
 
 def question_5(df: DataFrame) -> None:
