@@ -21,17 +21,31 @@ def main() -> None:
     print("Beginning process...")
     spark = get_local_spark_session()
     df = question_1(spark)
-    # question_2(df)
-    # question_3(df)
+    question_2(df)
+    question_3(df)
     question_4(df)
-    question_5(df)
-    question_6(df)
+    jobs_df = explode_jobs(df)
+    question_5(jobs_df)
+    question_6(jobs_df)
     question_7(df)
-    question_8(df)
+    question_8(jobs_df)
     question_9(df)
     question_10(df)
-    question_11(df)
-    question_12(df)
+    question_11_df = question_11(df)
+    question_12(question_11_df)
+    print("Complete.")
+
+
+def explode_jobs(df: DataFrame) -> DataFrame:
+    """Explode the dataframe on the jobHistory.
+
+    Args:
+        df (DataFrame): The raw loaded json data as a dataframe.
+
+    Returns:
+        DataFrame: The dataframe where each row is a job.
+    """
+    return df.select(f.explode("profile.jobHistory").alias("job"))
 
 
 def question_1(spark: SparkSession) -> DataFrame:
@@ -99,11 +113,17 @@ def question_4(df: DataFrame) -> None:
     print()
 
 
-def question_5(df: DataFrame) -> None:
-    """Print question 5 and provide the answer."""
+def question_5(jobs_df: DataFrame) -> None:
+    """Print question 5 and provide the answer.
+
+    Args:
+        jobs_df (DataFrame): The dataframe where each row is a job.
+    """
     print("Q5. What is the average salary across the whole dataset?")
-    fail
-    print("Question 5 complete.")
+    result = jobs_df.select(f.avg("job.salary").alias("average_salary")).collect()
+    average_salary = result[0]["average_salary"]
+    print(f"${round(average_salary, 2)}")
+    print()
 
 
 def question_6(df: DataFrame) -> None:
