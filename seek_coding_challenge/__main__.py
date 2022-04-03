@@ -207,10 +207,22 @@ def question_8(jobs_df: DataFrame) -> None:
 
 
 def question_9(df: DataFrame) -> None:
-    """Print question 9 and provide the answer."""
+    """Print question 9 and provide the answer.
+
+    Args:
+        df (DataFrame): The raw loaded json data as a dataframe.
+    """
     print("Q9. How many people are currently working?")
-    fail
-    print("Question 9 complete.")
+    udf_is_currently_working = f.udf(
+        lambda x: Profile(x).is_currently_working(), t.BooleanType()
+    )
+    currently_working_df = df.select(
+        udf_is_currently_working(f.col("profile")).alias("is_currently_working")
+    ).filter(
+        f.col("is_currently_working")
+    )
+    print(f"{currently_working_df.count()} currently working.")
+    print()
 
 
 def question_10(df: DataFrame) -> None:

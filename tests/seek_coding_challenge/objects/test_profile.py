@@ -233,3 +233,56 @@ def test_profile_get_current_from_date_should_return_current_from_date():
     result = profile.get_current_from_date()
     expected = date.fromisoformat("2020-01-02")
     assert result == expected
+
+
+def test_profile_is_currently_working_should_handle_no_jobs():
+    """Should run the test successfully."""
+    profile = Profile({"firstName": "jack", "lastName": "smith", "jobHistory": []})
+    assert not profile.is_currently_working()
+
+
+def test_profile_is_currently_working_should_handle_no_current_job():
+    """Should run the test successfully."""
+    profile = Profile(
+        {
+            "firstName": "jack",
+            "lastName": "smith",
+            "jobHistory": [
+                {
+                    "title": "engineer",
+                    "location": "melbourne",
+                    "salary": 150000,
+                    "fromDate": "2020-01-01",
+                    "toDate": "2020-01-02",
+                }
+            ],
+        }
+    )
+    assert not profile.is_currently_working()
+
+
+def test_profile_is_currently_working_should_return_true():
+    """Should run the test successfully."""
+    profile = Profile(
+        {
+            "firstName": "jack",
+            "lastName": "smith",
+            "jobHistory": [
+                {
+                    "title": "engineer",
+                    "location": "melbourne",
+                    "salary": 150000,
+                    "fromDate": "2020-01-01",
+                    "toDate": "2020-01-02",
+                },
+                {
+                    "title": "engineer",
+                    "location": "melbourne",
+                    "salary": 180000,
+                    "fromDate": "2020-01-02",
+                    "toDate": None,
+                },
+            ],
+        }
+    )
+    assert profile.is_currently_working()

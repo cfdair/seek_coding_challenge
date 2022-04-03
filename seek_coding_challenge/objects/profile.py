@@ -110,3 +110,11 @@ class Profile:
             return None
 
         return current_job.from_date
+
+    def is_currently_working(self) -> bool:
+        """Whether the profile is currently working.
+
+        Returns:
+            bool: Whether the profile is currently working.
+        """
+        return bool(self.get_current_job())
