@@ -126,13 +126,36 @@ def question_5(jobs_df: DataFrame) -> None:
     print()
 
 
-def question_6(df: DataFrame) -> None:
-    """Print question 6 and provide the answer."""
-    print("Q6. On average, what are the top 5 paying jobs? "
-                "Bottom 5 paying jobs? If there is a tie, please "
-                "order by title, location.")
-    fail
-    print("Question 6 complete.")
+def question_6(jobs_df: DataFrame) -> None:
+    """Print question 6 and provide the answer.
+
+    Args:
+        jobs_df (DataFrame): The dataframe where each row is a job.
+    """
+    print(
+        "Q6. On average, what are the top 5 paying jobs? "
+        "Bottom 5 paying jobs? If there is a tie, please "
+        "order by title, location."
+    )
+    # Note: Not sure how to exactly interpret this question.
+    # The interpretation implemented here was to find the
+    # average salary for job_title AND job_location, and then
+    # rank by that aggregation.
+    grouped_jobs_df = jobs_df.groupby(
+        "job.title",
+        "job.location"
+    ).agg(
+        f.round(f.avg("job.salary"), 2).alias("average_job_salary")
+    )
+    top_jobs_df = grouped_jobs_df.sort(
+        f.desc("average_job_salary"), f.desc("job.title"), f.desc("job.location")
+    )
+    top_jobs_df.show(5)
+    bottom_jobs_df = grouped_jobs_df.sort(
+        f.asc("average_job_salary"), f.desc("job.title"), f.desc("job.location")
+    )
+    bottom_jobs_df.show(5)
+    print()
 
 
 def question_7(df: DataFrame) -> None:
