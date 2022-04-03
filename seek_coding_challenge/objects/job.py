@@ -25,3 +25,12 @@ class Job:
     title: str
     from_date: date
     to_date: Optional[date]
+
+    def is_current(self) -> bool:
+        """Whether this job currently being worked.
+
+        Returns:
+            bool: Whether this job currently being worked.
+        """
+        return self.to_date is None
+

@@ -159,12 +159,34 @@ def question_6(jobs_df: DataFrame) -> None:
 
 
 def question_7(df: DataFrame) -> None:
-    """Print question 7 and provide the answer."""
-    print("Q7. Who is currently making the most money? "
-                "If there is a tie, please order in "
-                "lastName descending, fromDate descending.")
-    fail
-    print("Question 7 complete.")
+    """Print question 7 and provide the answer.
+
+    Args:
+        df (DataFrame): The raw loaded json data as a dataframe.
+    """
+    print(
+        "Q7. Who is currently making the most money? "
+        "If there is a tie, please order in "
+        "lastName descending, fromDate descending."
+    )
+    udf_get_current_salary = f.udf(
+        lambda x: Profile(x).get_current_salary(), t.IntegerType()
+    )
+    udf_get_current_from_date = f.udf(
+        lambda x: Profile(x).get_current_from_date(), t.DateType()
+    )
+    with_current_job_df = df.select(
+        "profile.firstName",
+        "profile.lastName",
+        udf_get_current_salary(f.col("profile")).alias("current_salary"),
+        udf_get_current_from_date(f.col("profile")).alias("current_from_date"),
+    )
+    with_current_job_df.sort(
+        f.desc("current_salary"),
+        f.desc("lastName"),
+        f.desc("current_from_date"),
+    ).show()
+    print()
 
 
 def question_8(df: DataFrame) -> None:

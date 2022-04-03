@@ -62,3 +62,51 @@ class Profile:
         number_of_jobs = len(self.job_history)
         average_salary = sum(x.salary for x in self.job_history) / number_of_jobs
         return round(average_salary, 2)
+
+    def get_current_job(self) -> Optional[Job]:
+        """Get the current job.
+
+        This is defined as any job that has no toDate.
+
+        None is returned if there is no current job.
+
+        Returns:
+            Optional[Job]: The current job.
+        """
+        current_jobs = [x for x in self.job_history if x.is_current()]
+        if len(current_jobs) > 1:
+            raise RuntimeError(
+                f"Multiple current jobs were found for "
+                f"'{self.first_name} {self.last_name} - {self.job_history}."
+            )
+        if len(current_jobs) == 1:
+            return current_jobs[0]
+        return None
+
+    def get_current_salary(self) -> Optional[int]:
+        """Get the salary of the current job.
+
+        None is returned if there is no current job.
+
+        Returns:
+            Optional[int]: The current salary.
+        """
+        current_job = self.get_current_job()
+        if current_job is None:
+            return None
+
+        return current_job.salary
+
+    def get_current_from_date(self) -> Optional[date]:
+        """Get the from date of the current job.
+
+        None is returned if there is no current job.
+
+        Returns:
+            Optional[date]: The current from date.
+        """
+        current_job = self.get_current_job()
+        if current_job is None:
+            return None
+
+        return current_job.from_date
