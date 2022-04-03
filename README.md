@@ -13,6 +13,12 @@ have access to Docker.
 Various make targets will be provided for simplicity, however,
 the specific bash commands will be provided to adhere to the docker requirement.
 
+### Assumptions
+It is assumed that each profile relates to a unique person within the dataset.
+
+Such that if two profile share a `firstName` and `lastName` they will be
+considered different people who just happen to have the same name.
+
 ## Getting Started
 
 This project assumes the following about the environment:
